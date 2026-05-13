@@ -2,26 +2,46 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"/>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <link rel="stylesheet" href="style.css">
+
 <title>Monkey Banana Catcher</title>
+
+
 </head>
 
 <body>
 
 <div class="game-container" id="gameContainer">
 
-    <div class="cloud cloud1">☁️</div>
-    <div class="cloud cloud2">☁️</div>
-    <div class="eagle ">🦅</div>
+    <div class="cloud-area">
+
+        <div class="cloud cloud1">☁️</div>
+        <div class="cloud cloud2">☁️</div>
+
+        <div class="eagle">🦅</div>
+
+    </div>
+
+    <div class="wind wind1"></div>
+    <div class="wind wind2"></div>
+    <div class="wind wind3"></div>
+
+    <div class="leaf leaf1">🍃</div>
+    <div class="leaf leaf2">🍃</div>
+    <div class="leaf leaf3">🍃</div>
+    <div class="leaf leaf4">🍃</div>
 
     <div class="ui">
-        <div class="card"> Score: <span id="score">0</span></div>
-        <div class="card">Lives: <span id="lives">3</span></div>
+
+        <div class="card">Score: <span id="score">0</span></div>
+        <div class="card"> Lives: <span id="lives">5</span></div>
         <div class="card"> Level: <span id="level">1</span></div>
-        <div class="card"> High Score: <span id="highScore">0</span></div>
-        <div class="card">Combo: <span id="combo">0</span></div>
-        <div class="card">⏱ Time: <span id="timer">60</span></div>
+        <div class="card"> Combo: <span id="combo">0</span></div>
+        <div class="card">High Score: <span id="highScore">0</span></div>
+        <div class="card">⏱ Time: <span id="timer">90</span></div>
+
     </div>
 
     <div class="tree">
@@ -33,18 +53,33 @@
 
     <div class="monkey" id="monkey">🐒</div>
 
+    <div class="mobile-controls">
+
+        <button class="control-btn" id="leftBtn">⬅️</button>
+        <button class="control-btn" id="rightBtn">➡️</button>
+
+    </div>
+
     <div class="ground"></div>
 
     <div class="screen" id="startScreen">
-        <h1> Monkey Banana Catcher </h1>
-        <p>Move using LEFT and RIGHT arrow keys or touch buttons on mobile.</p>
+
+        <h1>Monkey Banana Catcher </h1>
+
+        <p>Catch bananas and avoid rocks!</p>
+
         <button id="startBtn">Start Game</button>
+
     </div>
 
     <div class="screen" id="gameOverScreen" style="display:none;">
-        <h1><b>Game Over</b></h1>
+
+        <h1> Game Over</h1>
+
         <p id="finalText"></p>
+
         <button onclick="location.reload()">Play Again</button>
+
     </div>
 
 </div>
@@ -68,26 +103,36 @@ const finalText = document.getElementById("finalText");
 
 const startBtn = document.getElementById("startBtn");
 
+const leftBtn = document.getElementById("leftBtn");
+const rightBtn = document.getElementById("rightBtn");
+
 let monkeyX = 100;
 let bananaX = 200;
 let bananaY = 0;
 
 let score = 0;
-let lives = 3;
+let lives = 5;
 let level = 1;
 let combo = 0;
-let timeLeft = 60;
-
-let gameRunning = false;
+let highestCombo = 0;
+let timeLeft = 90;
 
 let bananaSpeed = 4;
 
+let gameRunning = false;
+
+let rockInterval;
+
 let highScore = localStorage.getItem("monkeyHighScore") || 0;
+
 highScoreEl.textContent = highScore;
 
 function randomBanana(){
 
-    bananaX = Math.random() * 750;
+    bananaX =
+    Math.random() *
+    (gameContainer.clientWidth - 80);
+
     bananaY = 0;
 
     banana.style.left = bananaX + "px";
@@ -96,11 +141,15 @@ function randomBanana(){
     const golden = Math.random() < 0.15;
 
     if(golden){
+
         banana.innerHTML = "🌟🍌";
         banana.dataset.points = "5";
+
     }else{
+
         banana.innerHTML = "🍌";
         banana.dataset.points = "1";
+
     }
 
 }
@@ -108,7 +157,9 @@ function randomBanana(){
 function createPopup(text,x,y){
 
     const popup = document.createElement("div");
+
     popup.className = "popup";
+
     popup.innerText = text;
 
     popup.style.left = x + "px";
@@ -117,7 +168,9 @@ function createPopup(text,x,y){
     gameContainer.appendChild(popup);
 
     setTimeout(()=>{
+
         popup.remove();
+
     },1000);
 
 }
@@ -125,10 +178,15 @@ function createPopup(text,x,y){
 function createRock(){
 
     const rock = document.createElement("div");
+
     rock.className = "rock";
+
     rock.innerHTML = "🪨";
 
-    let rockX = Math.random() * 800;
+    let rockX =
+    Math.random() *
+    (gameContainer.clientWidth - 80);
+
     let rockY = -50;
 
     rock.style.left = rockX + "px";
@@ -138,8 +196,10 @@ function createRock(){
     function moveRock(){
 
         if(!gameRunning){
+
             rock.remove();
             return;
+
         }
 
         rockY += 6 + level;
@@ -150,9 +210,11 @@ function createRock(){
         const rockRect = rock.getBoundingClientRect();
 
         if(
+
             rockRect.bottom >= monkeyRect.top &&
             rockRect.left < monkeyRect.right &&
             rockRect.right > monkeyRect.left
+
         ){
 
             lives--;
@@ -161,25 +223,35 @@ function createRock(){
             livesEl.textContent = lives;
             comboEl.textContent = combo;
 
-            gameContainer.style.animation = "shake 0.2s";
+            gameContainer.style.animation =
+            "shake 0.2s";
 
             setTimeout(()=>{
+
                 gameContainer.style.animation = "";
+
             },200);
 
             rock.remove();
 
             if(lives <= 0){
+
                 endGame();
+
             }
 
             return;
+
         }
 
         if(rockY < 700){
+
             requestAnimationFrame(moveRock);
+
         }else{
+
             rock.remove();
+
         }
 
     }
@@ -200,15 +272,25 @@ function moveBanana(){
     const bananaRect = banana.getBoundingClientRect();
 
     if(
+
         bananaRect.bottom >= monkeyRect.top &&
         bananaRect.left < monkeyRect.right &&
         bananaRect.right > monkeyRect.left
+
     ){
 
-        let points = parseInt(banana.dataset.points);
+        let points =
+        parseInt(banana.dataset.points);
 
         score += points;
+
         combo++;
+
+        if(combo > highestCombo){
+
+            highestCombo = combo;
+
+        }
 
         scoreEl.textContent = score;
         comboEl.textContent = combo;
@@ -216,20 +298,27 @@ function moveBanana(){
         createPopup("+" + points, bananaX, bananaY);
 
         if(score % 10 === 0){
+
             level++;
+
             bananaSpeed += 1;
 
             levelEl.textContent = level;
 
             createPopup("LEVEL UP!", 400, 200);
+
         }
 
         if(score > highScore){
 
             highScore = score;
-            localStorage.setItem("monkeyHighScore", highScore);
 
-            highScoreEl.textContent = highScore;
+            localStorage.setItem(
+            "monkeyHighScore",
+            highScore);
+
+            highScoreEl.textContent =
+            highScore;
 
         }
 
@@ -240,6 +329,7 @@ function moveBanana(){
     if(bananaY > 520){
 
         combo = 0;
+
         comboEl.textContent = combo;
 
         randomBanana();
@@ -255,14 +345,44 @@ document.addEventListener("keydown",(e)=>{
     if(!gameRunning) return;
 
     if(e.key === "ArrowLeft"){
+
         monkeyX -= 35;
+
     }
 
     if(e.key === "ArrowRight"){
+
         monkeyX += 35;
+
     }
 
-    monkeyX = Math.max(0, Math.min(monkeyX, 820));
+    monkeyX = Math.max(
+    0,
+    Math.min(
+    monkeyX,
+    gameContainer.clientWidth - 100));
+
+    monkey.style.left = monkeyX + "px";
+
+});
+
+leftBtn.addEventListener("touchstart",()=>{
+
+    monkeyX -= 35;
+
+    monkeyX = Math.max(0, monkeyX);
+
+    monkey.style.left = monkeyX + "px";
+
+});
+
+rightBtn.addEventListener("touchstart",()=>{
+
+    monkeyX += 35;
+
+    monkeyX = Math.min(
+    monkeyX,
+    gameContainer.clientWidth - 100);
 
     monkey.style.left = monkeyX + "px";
 
@@ -272,10 +392,19 @@ function endGame(){
 
     gameRunning = false;
 
+    clearInterval(rockInterval);
+
     finalText.innerHTML = `
-        Final Score: <strong>${score}</strong><br>
-        Highest Combo: <strong>${combo}</strong><br>
-        Reached Level: <strong>${level}</strong>
+
+    Final Score:
+    <strong>${score}</strong><br>
+
+    Highest Combo:
+    <strong>${highestCombo}</strong><br>
+
+    Reached Level:
+    <strong>${level}</strong>
+
     `;
 
     gameOverScreen.style.display = "flex";
@@ -292,10 +421,12 @@ function startGame(){
 
     moveBanana();
 
-    setInterval(()=>{
+    rockInterval = setInterval(()=>{
 
         if(gameRunning){
+
             createRock();
+
         }
 
     },3000);
@@ -303,8 +434,10 @@ function startGame(){
     const timer = setInterval(()=>{
 
         if(!gameRunning){
+
             clearInterval(timer);
             return;
+
         }
 
         timeLeft--;
