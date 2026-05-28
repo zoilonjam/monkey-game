@@ -1,496 +1,638 @@
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, sans-serif;
-    -webkit-tap-highlight-color: transparent;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
 }
 
 body{
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    overflow:hidden;
-    background:linear-gradient(to bottom,#87ceeb,#dff6ff);
-    user-select:none;
+overflow:hidden;
+background:#111;
 }
 
 .game-container{
-    position:relative;
-    width:950px;
-    max-width:95%;
-    height:650px;
-    overflow:hidden;
-    border-radius:30px;
-    border:6px solid white;
-    box-shadow:0 15px 40px rgba(0,0,0,0.25);
-    background:
-    linear-gradient(to bottom,
-    #87ceeb 0%,
-    #ccefff 55%,
-    #6bc96b 56%,
-    #2e8b2e 100%);
+position:relative;
+width:100vw;
+height:100vh;
+overflow:hidden;
+background:linear-gradient(to top,#2d5016,#87ceeb);
 }
 
-/* CLOUD AREA */
 
-.cloud-area{
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:220px;
-    z-index:5;
+#loadingScreen{
+position:fixed;
+width:100%;
+height:100%;
+background:#111;
+color:#fff;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:40px;
+z-index:9999;
+}
+
+/* MOUNTAINS */
+
+.mountains{
+position:absolute;
+bottom:70px;
+width:100%;
+height:250px;
+background:
+linear-gradient(
+135deg,
+transparent 75%,
+#355e3b 75%
+),
+linear-gradient(
+225deg,
+transparent 75%,
+#2d4d32 75%
+);
+background-size:300px 250px;
+opacity:0.7;
+}
+
+/* FOG */
+
+.fog{
+position:absolute;
+width:200%;
+height:100%;
+background:
+rgba(255,255,255,0.08);
+animation:fogMove 30s linear infinite;
+pointer-events:none;
+}
+
+@keyframes fogMove{
+
+from{
+transform:translateX(0);
+}
+
+to{
+transform:translateX(-50%);
+}
+
 }
 
 /* CLOUDS */
 
+.cloud-area{
+position:absolute;
+top:0;
+width:100%;
+height:200px;
+pointer-events:none;
+}
+
 .cloud{
-    position:absolute;
-    font-size:90px;
-    opacity:0.9;
+position:absolute;
+font-size:90px;
+opacity:0.7;
+animation:cloudMove linear infinite;
 }
 
 .cloud1{
-    top:20px;
-    left:100px;
-    animation:floatCloud 12s ease-in-out infinite alternate;
+top:20px;
+left:-300px;
+animation-duration:45s;
 }
 
 .cloud2{
-    top:100px;
-    left:450px;
-    animation:floatCloud 16s ease-in-out infinite alternate;
+top:90px;
+left:-500px;
+animation-duration:60s;
 }
 
-@keyframes floatCloud{
+@keyframes cloudMove{
 
-    from{
-        transform:translateX(0);
-    }
+from{
+transform:translateX(0);
+}
 
-    to{
-        transform:translateX(40px);
-    }
+to{
+transform:translateX(140vw);
+}
 
 }
 
 /* EAGLE */
 
 .eagle{
-    position:absolute;
-    top:50px;
-    left:260px;
-    font-size:75px;
-    z-index:10;
-
-    animation:
-    eagleFly 6s ease-in-out infinite alternate,
-    flap 0.4s infinite alternate;
+position:absolute;
+top:60px;
+left:-200px;
+font-size:70px;
+animation:eagleFly 18s linear infinite;
 }
 
 @keyframes eagleFly{
 
-    from{
-        transform:translateX(0) translateY(0);
-    }
-
-    to{
-        transform:translateX(140px) translateY(20px);
-    }
-
+from{
+transform:
+translateX(0)
+translateY(0);
 }
 
-@keyframes flap{
+50%{
+transform:
+translateX(60vw)
+translateY(-30px);
+}
 
-    from{
-        transform:scale(1);
-    }
-
-    to{
-        transform:scale(1.08);
-    }
+to{
+transform:
+translateX(130vw)
+translateY(0);
+}
 
 }
 
 /* WIND */
 
 .wind{
-    position:absolute;
-    width:120px;
-    height:4px;
-    border-radius:20px;
-
-    background:
-    linear-gradient(
-    to right,
-    rgba(255,255,255,0),
-    rgba(255,255,255,0.8),
-    rgba(255,255,255,0));
-
-    opacity:0.7;
+position:absolute;
+height:2px;
+background:
+rgba(255,255,255,0.4);
+animation:windMove linear infinite;
 }
 
 .wind1{
-    top:70px;
-    left:-200px;
-    animation:windMove 4s linear infinite;
+top:150px;
+width:120px;
+animation-duration:3s;
 }
 
 .wind2{
-    top:130px;
-    left:-300px;
-    animation:windMove 5s linear infinite;
+top:250px;
+width:180px;
+animation-duration:4s;
 }
 
 .wind3{
-    top:180px;
-    left:-250px;
-    animation:windMove 3.5s linear infinite;
+top:350px;
+width:150px;
+animation-duration:5s;
 }
 
 @keyframes windMove{
 
-    from{
-        transform:translateX(0);
-    }
+from{
+left:-200px;
+}
 
-    to{
-        transform:translateX(1400px);
-    }
+to{
+left:120%;
+}
 
 }
 
-/* LEAVES BLOWING */
+/* LEAVES */
 
 .leaf{
-    position:absolute;
-    font-size:30px;
-    z-index:7;
-    opacity:0.9;
+position:absolute;
+font-size:30px;
+animation:leafFall linear infinite;
 }
 
 .leaf1{
-    top:120px;
-    left:-100px;
-    animation:leafBlow 8s linear infinite;
+left:10%;
+animation-duration:10s;
 }
 
 .leaf2{
-    top:220px;
-    left:-250px;
-    animation:leafBlow 10s linear infinite;
+left:35%;
+animation-duration:12s;
 }
 
 .leaf3{
-    top:320px;
-    left:-180px;
-    animation:leafBlow 7s linear infinite;
+left:60%;
+animation-duration:8s;
 }
 
 .leaf4{
-    top:150px;
-    left:-350px;
-    animation:leafBlow 12s linear infinite;
+left:80%;
+animation-duration:14s;
 }
 
-@keyframes leafBlow{
+.leaf5{
+left:90%;
+animation-duration:9s;
+}
 
-    0%{
-        transform:
-        translateX(0)
-        translateY(0)
-        rotate(0deg);
-    }
+@keyframes leafFall{
 
-    25%{
-        transform:
-        translateX(300px)
-        translateY(-40px)
-        rotate(90deg);
-    }
+from{
+top:-100px;
+transform:rotate(0deg);
+}
 
-    50%{
-        transform:
-        translateX(650px)
-        translateY(30px)
-        rotate(180deg);
-    }
-
-    75%{
-        transform:
-        translateX(900px)
-        translateY(-20px)
-        rotate(270deg);
-    }
-
-    100%{
-        transform:
-        translateX(1300px)
-        translateY(10px)
-        rotate(360deg);
-    }
+to{
+top:120%;
+transform:rotate(360deg);
+}
 
 }
 
-/* TREE */
+/* TREES */
 
 .tree{
-    position:absolute;
-    right:100px;
-    bottom:100px;
-    width:180px;
-    height:400px;
+position:absolute;
+bottom:70px;
+width:200px;
+height:300px;
+z-index:2;
 }
 
-.trunk{
-    position:absolute;
-    bottom:0;
-    left:70px;
-    width:40px;
-    height:250px;
-    background:#7b4b20;
-    border-radius:10px;
+.tree1{
+left:50px;
+}
+
+.tree2{
+right:100px;
+transform:scale(0.8);
 }
 
 .leaves{
-    position:absolute;
-    top:0;
-    width:180px;
-    height:180px;
-    background:#1f9f42;
-    border-radius:50%;
-
-    box-shadow:
-    -40px 30px 0 #2ab54c,
-    40px 30px 0 #2ab54c;
+position:absolute;
+width:200px;
+height:200px;
+background:#2e7d32;
+border-radius:50%;
+top:0;
+left:0;
+box-shadow:
+0 0 50px rgba(0,0,0,0.3);
 }
 
-/* BANANA */
-
-.banana{
-    position:absolute;
-    top:100px;
-    left:200px;
-    font-size:55px;
-    z-index:15;
-    animation:swing 0.8s infinite alternate;
+.trunk{
+position:absolute;
+width:50px;
+height:150px;
+background:#5d4037;
+bottom:0;
+left:75px;
+border-radius:10px;
 }
 
-@keyframes swing{
-
-    from{
-        transform:rotate(-10deg);
-    }
-
-    to{
-        transform:rotate(10deg);
-    }
-
+.butterfly{
+position:absolute;
+font-size:30px;
+z-index:5;
+animation:fly 8s linear infinite;
 }
 
-/* MONKEY */
+.butterfly1{
+top:200px;
+left:-100px;
+}
 
-.monkey{
-    position:absolute;
-    bottom:80px;
-    left:100px;
-    font-size:90px;
-    z-index:20;
+.butterfly2{
+top:300px;
+left:-300px;
+}
 
-    transition:left 0.08s linear;
+@keyframes sway{
 
-    animation:bounce 1s infinite alternate;
+0%{
+transform:rotate(0deg);
+}
+
+50%{
+transform:rotate(5deg);
+}
+
+100%{
+transform:rotate(0deg);
+}
+
 }
 
 @keyframes bounce{
 
-    from{
-        transform:translateY(0);
-    }
+0%{
+transform:translateY(0);
+}
 
-    to{
-        transform:translateY(-8px);
-    }
+50%{
+transform:translateY(-8px);
+}
+
+100%{
+transform:translateY(0);
+}
 
 }
 
-/* ROCK */
+@keyframes fly{
 
-.rock{
-    position:absolute;
-    font-size:50px;
-    top:-50px;
-    z-index:18;
+0%{
+transform:translateX(0);
 }
 
-/* GROUND */
+100%{
+transform:translateX(2200px);
+}
 
-.ground{
-    position:absolute;
-    bottom:0;
-    width:100%;
-    height:100px;
-    background:#4d9f38;
+}
+
+@keyframes blink{
+
+0%{
+opacity:0.2;
+}
+
+100%{
+opacity:1;
+}
+
+}
+
+.mushroom{
+position:absolute;
+bottom:90px;
+font-size:35px;
+z-index:4;
+animation:bounce 2s infinite;
+}
+
+.mushroom1{
+left:180px;
+}
+
+.mushroom2{
+right:450px;
+}
+
+.flower{
+position:absolute;
+bottom:85px;
+font-size:28px;
+z-index:4;
+animation:sway 3s infinite ease-in-out;
+}
+
+.flower1{
+left:500px;
+}
+
+.flower2{
+right:550px;
+}
+
+.grass{
+position:absolute;
+bottom:70px;
+width:100%;
+height:30px;
+background:
+repeating-linear-gradient(
+90deg,
+#2e7d32,
+#2e7d32 10px,
+#43a047 10px,
+#43a047 20px
+);
+z-index:5;
 }
 
 /* UI */
 
 .ui{
-    position:absolute;
-    top:15px;
-    left:15px;
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    z-index:50;
+position:absolute;
+top:10px;
+left:10px;
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+z-index:100;
 }
 
 .card{
-    padding:10px 16px;
-    border-radius:18px;
-    background:rgba(255,255,255,0.25);
-    backdrop-filter:blur(10px);
-    font-weight:bold;
-    color:#222;
-    box-shadow:0 5px 15px rgba(0,0,0,0.15);
+background:rgba(0,0,0,0.5);
+color:#fff;
+padding:10px 15px;
+border-radius:12px;
+font-weight:bold;
+}
+
+button{
+border:none;
+padding:10px 15px;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+
+
+.monkey{
+position:absolute;
+bottom:80px;
+left:100px;
+font-size:70px;
+transition:0.1s;
+z-index:10;
+}
+
+
+
+.banana{
+position:absolute;
+font-size:50px;
+top:0;
+left:0;
+z-index:10;
+}
+
+
+
+.rock{
+position:absolute;
+font-size:45px;
+top:-50px;
+z-index:9;
+}
+
+/* GROUND */
+
+.ground{
+position:absolute;
+bottom:0;
+width:100%;
+height:70px;
+background:#4e342e;
 }
 
 /* SCREEN */
 
 .screen{
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,0.45);
-
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-
-    color:white;
-    z-index:100;
-    text-align:center;
+position:absolute;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.8);
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+color:white;
+z-index:200;
+text-align:center;
 }
 
 .screen h1{
-    font-size:4rem;
-    margin-bottom:20px;
+font-size:60px;
+margin-bottom:20px;
 }
 
 .screen p{
-    margin-bottom:20px;
-}
-
-/* BUTTONS */
-
-button{
-    padding:16px 35px;
-    border:none;
-    border-radius:50px;
-    font-size:1rem;
-    font-weight:bold;
-    cursor:pointer;
-
-    background:
-    linear-gradient(to right,#ffb703,#fb8500);
-
-    color:white;
-
-    transition:0.2s;
-}
-
-button:hover{
-    transform:scale(1.08);
-}
-
-/* MOBILE CONTROLS */
-
-.mobile-controls{
-    position:absolute;
-    bottom:20px;
-    width:100%;
-    display:none;
-    justify-content:space-between;
-    padding:0 30px;
-    z-index:60;
-}
-
-.control-btn{
-    width:85px;
-    height:85px;
-    border-radius:50%;
-    font-size:2rem;
-
-    background:rgba(255,255,255,0.25);
-    backdrop-filter:blur(10px);
-}
-
-.control-btn:active{
-    transform:scale(0.9);
-}
-
-/* POPUP */
-
-.popup{
-    position:absolute;
-    color:white;
-    font-size:24px;
-    font-weight:bold;
-    animation:popup 1s forwards;
-}
-
-@keyframes popup{
-
-    from{
-        opacity:1;
-        transform:translateY(0);
-    }
-
-    to{
-        opacity:0;
-        transform:translateY(-50px);
-    }
-
-}
-
-/* SHAKE */
-
-@keyframes shake{
-
-    0%{ transform:translateX(0); }
-    25%{ transform:translateX(-5px); }
-    50%{ transform:translateX(5px); }
-    75%{ transform:translateX(-5px); }
-    100%{ transform:translateX(0); }
-
+font-size:22px;
+margin-bottom:20px;
 }
 
 /* MOBILE */
 
-@media(max-width:768px){
+.mobile-controls{
+position:absolute;
+bottom:90px;
+width:100%;
+display:flex;
+justify-content:center;
+gap:20px;
+z-index:100;
+}
 
-    .mobile-controls{
-        display:flex;
-    }
+.control-btn{
+font-size:30px;
+padding:15px 20px;
+border-radius:50%;
+}
 
-    .card{
-        font-size:0.75rem;
-        padding:8px 10px;
-    }
+/* POPUPS */
 
-    .tree{
-        transform:scale(0.7);
-        right:-20px;
-    }
+.popup{
+position:absolute;
+color:#fff;
+font-size:30px;
+font-weight:bold;
+animation:popup 1s forwards;
+pointer-events:none;
+z-index:999;
+}
 
-    .monkey{
-        font-size:70px;
-    }
+@keyframes popup{
 
-    .banana{
-        font-size:45px;
-    }
+0%{
+opacity:1;
+transform:translateY(0);
+}
+
+100%{
+opacity:0;
+transform:translateY(-100px);
+}
+
+}
+
+/* COMBO */
+
+.combo-mode{
+animation:glow 0.5s infinite alternate;
+}
+
+@keyframes glow{
+
+from{
+filter:brightness(1);
+}
+
+to{
+filter:brightness(1.3);
+}
+
+}
+
+/* PARTICLES */
+
+.particle{
+position:absolute;
+width:10px;
+height:10px;
+background:yellow;
+border-radius:50%;
+animation:explode 0.8s forwards;
+}
+
+@keyframes explode{
+
+to{
+transform:
+translate(var(--x),var(--y));
+opacity:0;
+}
+
+}
+
+
+.boss-eagle{
+position:absolute;
+top:100px;
+left:-200px;
+font-size:120px;
+animation:bossFly 12s linear forwards;
+z-index:50;
+}
+
+@keyframes bossFly{
+
+to{
+left:120%;
+}
+
+}
+
+
+.rain{
+position:absolute;
+width:2px;
+height:25px;
+background:
+rgba(255,255,255,0.5);
+animation:rainFall linear infinite;
+}
+
+@keyframes rainFall{
+
+to{
+transform:translateY(120vh);
+}
+
+}
+
+@keyframes shake{
+
+0%{
+transform:translateX(0);
+}
+
+25%{
+transform:translateX(-10px);
+}
+
+50%{
+transform:translateX(10px);
+}
+
+75%{
+transform:translateX(-10px);
+}
+
+100%{
+transform:translateX(0);
+}
 
 }
