@@ -1,464 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
+
 <meta name="viewport"
-content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+content="width=device-width,
+initial-scale=1.0,
+maximum-scale=1.0,
+user-scalable=no"/>
+
 <link rel="stylesheet" href="style.css">
 
-<title>Monkey Banana Catcher</title>
-
-
+<title>Feed the Monkey</title>
 </head>
 
 <body>
 
-<div class="game-container" id="gameContainer">
+<div id="loadingScreen">
+Loading Jungle...
+</div>
 
-    <div class="cloud-area">
+<div class="game-container"
+id="gameContainer">
 
-        <div class="cloud cloud1">☁️</div>
-        <div class="cloud cloud2">☁️</div>
+<div class="mountains"></div>
+<div class="fog"></div>
 
-        <div class="eagle">🦅</div>
+<div class="cloud-area">
+<div class="cloud cloud1">☁️</div>
+<div class="cloud cloud2">☁️</div>
+</div>
 
-    </div>
+<div class="eagle">🦅</div>
 
-    <div class="wind wind1"></div>
-    <div class="wind wind2"></div>
-    <div class="wind wind3"></div>
+<div class="wind wind1"></div>
+<div class="wind wind2"></div>
+<div class="wind wind3"></div>
 
-    <div class="leaf leaf1">🍃</div>
-    <div class="leaf leaf2">🍃</div>
-    <div class="leaf leaf3">🍃</div>
-    <div class="leaf leaf4">🍃</div>
+<div class="leaf leaf1">🍃</div>
+<div class="leaf leaf2">🍂</div>
+<div class="leaf leaf3">🍃</div>
+<div class="leaf leaf4">🍂</div>
+<div class="leaf leaf5">🍁</div>
 
-    <div class="ui">
+<div class="tree tree1">
+<div class="leaves"></div>
+<div class="trunk"></div>
+</div>
 
-        <div class="card">Score: <span id="score">0</span></div>
-        <div class="card"> Lives: <span id="lives">5</span></div>
-        <div class="card"> Level: <span id="level">1</span></div>
-        <div class="card"> Combo: <span id="combo">0</span></div>
-        <div class="card">High Score: <span id="highScore">0</span></div>
-        <div class="card">⏱ Time: <span id="timer">90</span></div>
+<div class="tree tree2">
+<div class="leaves"></div>
+<div class="trunk"></div>
+</div>
 
-    </div>
 
-    <div class="tree">
-        <div class="leaves"></div>
-        <div class="trunk"></div>
-    </div>
+<div class="mushroom mushroom1">🍄</div>
+<div class="mushroom mushroom2">🍄</div>
 
-    <div class="banana" id="banana">🍌</div>
+<div class="flower flower1">🌸</div>
+<div class="flower flower2">🌼</div>
 
-    <div class="monkey" id="monkey">🐒</div>
+<div class="butterfly butterfly1">🦋</div>
+<div class="butterfly butterfly2">🦋</div>
 
-    <div class="mobile-controls">
 
-        <button class="control-btn" id="leftBtn">⬅️</button>
-        <button class="control-btn" id="rightBtn">➡️</button>
+<div class="firefly firefly1"></div>
+<div class="firefly firefly2"></div>
 
-    </div>
 
-    <div class="ground"></div>
+<div class="grass"></div>
 
-    <div class="screen" id="startScreen">
+<div class="ui">
 
-        <h1>Monkey Banana Catcher </h1>
+<div class="card">
+Score: 
+<span id="score">0</span>
+</div>
 
-        <p>Catch bananas and avoid rocks!</p>
+<div class="card">
+Bananas Caught:
+<span id="bananasCaught">0</span>
+</div>
 
-        <button id="startBtn">Start Game</button>
+<div class="card">
+Lives:
+<span id="lives">5</span>
+</div>
 
-    </div>
+<div class="card">
+Level:
+<span id="level">1</span>
+</div>
 
-    <div class="screen" id="gameOverScreen" style="display:none;">
+<div class="card">
+Mission:
+<span id="mission">
+Catch 10 bananas
+</span>
+</div>
 
-        <h1> Game Over</h1>
-
-        <p id="finalText"></p>
-
-        <button onclick="location.reload()">Play Again</button>
-
-    </div>
+<button id="pauseBtn">
+⏸ Pause
+</button>
 
 </div>
 
-<script>
+<div class="banana"
+id="banana">🍌</div>
 
-const monkey = document.getElementById("monkey");
-const banana = document.getElementById("banana");
-const gameContainer = document.getElementById("gameContainer");
+<div class="monkey"
+id="monkey">🐒</div>
 
-const scoreEl = document.getElementById("score");
-const livesEl = document.getElementById("lives");
-const levelEl = document.getElementById("level");
-const comboEl = document.getElementById("combo");
-const timerEl = document.getElementById("timer");
-const highScoreEl = document.getElementById("highScore");
+<div class="mobile-controls">
 
-const startScreen = document.getElementById("startScreen");
-const gameOverScreen = document.getElementById("gameOverScreen");
-const finalText = document.getElementById("finalText");
+<button class="control-btn"
+id="leftBtn">⬅️</button>
 
-const startBtn = document.getElementById("startBtn");
+<button class="control-btn"
+id="rightBtn">➡️</button>
 
-const leftBtn = document.getElementById("leftBtn");
-const rightBtn = document.getElementById("rightBtn");
+</div>
 
-let monkeyX = 100;
-let bananaX = 200;
-let bananaY = 0;
+<div class="ground"></div>
 
-let score = 0;
-let lives = 5;
-let level = 1;
-let combo = 0;
-let highestCombo = 0;
-let timeLeft = 90;
+<div class="screen"
+id="startScreen">
 
-let bananaSpeed = 4;
+<h1>
+ Feed the Monkey
+</h1>
 
-let gameRunning = false;
+<p>
+Feed the monkey bananas!
+</p>
 
-let rockInterval;
+<button id="startBtn">
+▶ Start Game
+</button>
 
-let highScore = localStorage.getItem("monkeyHighScore") || 0;
+</div>
 
-highScoreEl.textContent = highScore;
+<div class="screen"
+id="gameOverScreen"
+style="display:none;">
 
-function randomBanana(){
+<h1>Game Over</h1>
 
-    bananaX =
-    Math.random() *
-    (gameContainer.clientWidth - 80);
+<p id="finalText"></p>
 
-    bananaY = 0;
+<button onclick="location.reload()">
+Play Again
+</button>
 
-    banana.style.left = bananaX + "px";
-    banana.style.top = bananaY + "px";
+</div>
 
-    const golden = Math.random() < 0.15;
+<div class="screen"
+id="winScreen"
+style="display:none;">
 
-    if(golden){
+<h1>Mission Complete!</h1>
 
-        banana.innerHTML = "🌟🍌";
-        banana.dataset.points = "5";
+<p id="winText"></p>
 
-    }else{
+<button id="nextLevelBtn">
+➡ Next Level
+</button>
 
-        banana.innerHTML = "🍌";
-        banana.dataset.points = "1";
+</div>
 
-    }
-
-}
-
-function createPopup(text,x,y){
-
-    const popup = document.createElement("div");
-
-    popup.className = "popup";
-
-    popup.innerText = text;
-
-    popup.style.left = x + "px";
-    popup.style.top = y + "px";
-
-    gameContainer.appendChild(popup);
-
-    setTimeout(()=>{
-
-        popup.remove();
-
-    },1000);
-
-}
-
-function createRock(){
-
-    const rock = document.createElement("div");
-
-    rock.className = "rock";
-
-    rock.innerHTML = "🪨";
-
-    let rockX =
-    Math.random() *
-    (gameContainer.clientWidth - 80);
-
-    let rockY = -50;
-
-    rock.style.left = rockX + "px";
-
-    gameContainer.appendChild(rock);
-
-    function moveRock(){
-
-        if(!gameRunning){
-
-            rock.remove();
-            return;
-
-        }
-
-        rockY += 6 + level;
-
-        rock.style.top = rockY + "px";
-
-        const monkeyRect = monkey.getBoundingClientRect();
-        const rockRect = rock.getBoundingClientRect();
-
-        if(
-
-            rockRect.bottom >= monkeyRect.top &&
-            rockRect.left < monkeyRect.right &&
-            rockRect.right > monkeyRect.left
-
-        ){
-
-            lives--;
-            combo = 0;
-
-            livesEl.textContent = lives;
-            comboEl.textContent = combo;
-
-            gameContainer.style.animation =
-            "shake 0.2s";
-
-            setTimeout(()=>{
-
-                gameContainer.style.animation = "";
-
-            },200);
-
-            rock.remove();
-
-            if(lives <= 0){
-
-                endGame();
-
-            }
-
-            return;
-
-        }
-
-        if(rockY < 700){
-
-            requestAnimationFrame(moveRock);
-
-        }else{
-
-            rock.remove();
-
-        }
-
-    }
-
-    moveRock();
-
-}
-
-function moveBanana(){
-
-    if(!gameRunning) return;
-
-    bananaY += bananaSpeed + level;
-
-    banana.style.top = bananaY + "px";
-
-    const monkeyRect = monkey.getBoundingClientRect();
-    const bananaRect = banana.getBoundingClientRect();
-
-    if(
-
-        bananaRect.bottom >= monkeyRect.top &&
-        bananaRect.left < monkeyRect.right &&
-        bananaRect.right > monkeyRect.left
-
-    ){
-
-        let points =
-        parseInt(banana.dataset.points);
-
-        score += points;
-
-        combo++;
-
-        if(combo > highestCombo){
-
-            highestCombo = combo;
-
-        }
-
-        scoreEl.textContent = score;
-        comboEl.textContent = combo;
-
-        createPopup("+" + points, bananaX, bananaY);
-
-        if(score % 10 === 0){
-
-            level++;
-
-            bananaSpeed += 1;
-
-            levelEl.textContent = level;
-
-            createPopup("LEVEL UP!", 400, 200);
-
-        }
-
-        if(score > highScore){
-
-            highScore = score;
-
-            localStorage.setItem(
-            "monkeyHighScore",
-            highScore);
-
-            highScoreEl.textContent =
-            highScore;
-
-        }
-
-        randomBanana();
-
-    }
-
-    if(bananaY > 520){
-
-        combo = 0;
-
-        comboEl.textContent = combo;
-
-        randomBanana();
-
-    }
-
-    requestAnimationFrame(moveBanana);
-
-}
-
-document.addEventListener("keydown",(e)=>{
-
-    if(!gameRunning) return;
-
-    if(e.key === "ArrowLeft"){
-
-        monkeyX -= 35;
-
-    }
-
-    if(e.key === "ArrowRight"){
-
-        monkeyX += 35;
-
-    }
-
-    monkeyX = Math.max(
-    0,
-    Math.min(
-    monkeyX,
-    gameContainer.clientWidth - 100));
-
-    monkey.style.left = monkeyX + "px";
-
-});
-
-leftBtn.addEventListener("touchstart",()=>{
-
-    monkeyX -= 35;
-
-    monkeyX = Math.max(0, monkeyX);
-
-    monkey.style.left = monkeyX + "px";
-
-});
-
-rightBtn.addEventListener("touchstart",()=>{
-
-    monkeyX += 35;
-
-    monkeyX = Math.min(
-    monkeyX,
-    gameContainer.clientWidth - 100);
-
-    monkey.style.left = monkeyX + "px";
-
-});
-
-function endGame(){
-
-    gameRunning = false;
-
-    clearInterval(rockInterval);
-
-    finalText.innerHTML = `
-
-    Final Score:
-    <strong>${score}</strong><br>
-
-    Highest Combo:
-    <strong>${highestCombo}</strong><br>
-
-    Reached Level:
-    <strong>${level}</strong>
-
-    `;
-
-    gameOverScreen.style.display = "flex";
-
-}
-
-function startGame(){
-
-    startScreen.style.display = "none";
-
-    gameRunning = true;
-
-    randomBanana();
-
-    moveBanana();
-
-    rockInterval = setInterval(()=>{
-
-        if(gameRunning){
-
-            createRock();
-
-        }
-
-    },3000);
-
-    const timer = setInterval(()=>{
-
-        if(!gameRunning){
-
-            clearInterval(timer);
-            return;
-
-        }
-
-        timeLeft--;
-
-        timerEl.textContent = timeLeft;
-
-        if(timeLeft <= 0){
-
-            clearInterval(timer);
-
-            endGame();
-
-        }
-
-    },1000);
-
-}
-
-startBtn.addEventListener("click",startGame);
-
-</script>
+</div>
+<script src="script.js"></script>
 
 </body>
 </html>
