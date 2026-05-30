@@ -44,7 +44,7 @@ Save high scores using a Database
 
 Installation
 Download or clone the project.
-git clone https://github.com/yourusername/feed-the-monkey.git
+git clone https://github.com/zoilonjam/feed-the-monkey.git
 Open the project folder.
 Run the game through a live server.
 JavaScript (Vanilla JS)
